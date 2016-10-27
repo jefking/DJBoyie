@@ -1,14 +1,15 @@
-
-
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var appInsights = require('applicationinsights');
 
 var routes = require('./routes/index');
 var users = require('./routes/user');
+
+appInsights.setup('6291b023-8d10-4d00-8a36-f14d3be59ce1').start();
 
 var app = express();
 
