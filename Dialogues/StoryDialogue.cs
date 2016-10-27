@@ -4,6 +4,7 @@
     using Microsoft.Bot.Connector;
     using Models;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
 
     [Serializable]
@@ -34,19 +35,17 @@
                     story.Content = message.Text;
                     story.Task = PersonalStoryTask.Images;
                     break;
-                case PersonalStoryTask.Images:
-                    if (null != message.Attachments && 0 < message.Attachments.Count)
-                    {
-                        story.Images = new string[message.Attachments.Count];
-                        for (var i = 0; i < message.Attachments.Count; i++)
-                        {
-                            story.Images[i] = message.Attachments[i].ContentUrl;
-                        }
-                        story.Task = PersonalStoryTask.Theme;
-                    }
-                    break;
             }
-            
+
+            if (null != message.Attachments && 0 < message.Attachments.Count)
+            {
+                story.Images = new string[message.Attachments.Count];
+                for (var i = 0; i < message.Attachments.Count; i++)
+                {
+                    story.Images[i] = message.Attachments[i].ContentUrl;
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(story.Theme) && !string.IsNullOrWhiteSpace(story.Content) && null != story.Images && 0 < story.Images.Length)
             {
                 story.Task = PersonalStoryTask.Done;
@@ -65,7 +64,7 @@
             var reply = context.MakeMessage();
             reply.Recipient = reply.From;
             reply.Type = "message";
-            //message.Attachments = new List<Attachment>();
+            
 
             switch (story.Task)
             {
@@ -81,14 +80,21 @@
                 case PersonalStoryTask.Done:
                     reply.Text = $"{story.Theme}: {story.Content}";
 
+                    reply.Attachments = new List<Attachment>();
+                    var cardImages = new List<CardImage>();
+
                     foreach (var image in story.Images)
                     {
-                        reply.Attachments.Add(new Attachment()
-                        {
-                            ContentUrl = image,
-                            ContentType = "image/png"
-                        });
+                        cardImages.Add(new CardImage(url: image));
                     }
+
+                    var plCard = new HeroCard()
+                    {
+                        Title = story.Theme,
+                        Subtitle = story.Content,
+                        Images = cardImages
+                    };
+
                     //show them a card of what they have done
                     break;
             }
