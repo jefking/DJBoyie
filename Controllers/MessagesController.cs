@@ -76,7 +76,6 @@ namespace shujaaz.djboyie
                 case ActivityTypes.ContactRelationUpdate:
                     // Handle add/remove from contact lists
                     // Activity.From + Activity.Action represent what happened
-                    message.Action
                     break;
                 case ActivityTypes.Typing:
                     // Handle knowing that the user is typing
