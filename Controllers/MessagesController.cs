@@ -1,12 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.Bot.Connector;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.Description;
-using Microsoft.Bot.Connector;
-using Newtonsoft.Json;
 
 namespace shujaaz.djboyie
 {
@@ -22,6 +19,7 @@ namespace shujaaz.djboyie
             if (activity.Type == ActivityTypes.Message)
             {
                 var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+
                 // calculate something for us to return
                 var length = (activity.Text ?? string.Empty).Length;
 
@@ -36,7 +34,15 @@ namespace shujaaz.djboyie
                     }
                 }
 
-                await connector.Conversations.ReplyToActivityAsync(activity.CreateReply(reply));
+                var acc = activity.CreateReply(reply);
+
+                    acc.Attachments.Add(new Attachment()
+                    {
+                        ContentUrl = "https://upload.wikimedia.org/wikipedia/en/a/a6/Bender_Rodriguez.png",
+                        ContentType = "image/png",
+                        Name = "Bender_Rodriguez.png"
+                    });
+                await connector.Conversations.ReplyToActivityAsync(acc);
             }
             else
             {
@@ -66,7 +72,7 @@ namespace shujaaz.djboyie
             }
             else if (message.Type == ActivityTypes.Typing)
             {
-                // Handle knowing tha the user is typing
+                // Handle knowing that the user is typing
             }
             else if (message.Type == ActivityTypes.Ping)
             {
