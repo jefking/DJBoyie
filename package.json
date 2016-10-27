@@ -7,5 +7,8 @@
     "express": "^4.14.0",
     "botbuilder":"^3.3.3",
     "restify": "^4.2.0"
+  },
+  "engines": {
+    "node": "6.6.0"
   }
 }
