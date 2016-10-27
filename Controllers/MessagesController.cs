@@ -22,18 +22,6 @@
                 case ActivityTypes.Message:
                     await Conversation.SendAsync(activity, () => new StoryDialogue());
                     break;
-                default:
-                    HandleSystemMessage(activity);
-                    break;
-            }
-            
-            return Request.CreateResponse(HttpStatusCode.OK);
-        }
-
-        private Activity HandleSystemMessage(Activity message)
-        {
-            switch (message.Type)
-            {
                 case ActivityTypes.DeleteUserData:
                     // Implement user deletion here
                     // If we handle user deletion, return a real message
@@ -54,7 +42,7 @@
                     break;
             }
 
-            return null;
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
     }
 }

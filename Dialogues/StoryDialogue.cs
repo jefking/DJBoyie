@@ -87,7 +87,7 @@
 
                     var card = new HeroCard()
                     {
-                        Title = $"The hustle: {story.Theme}",
+                        Title = $"Your hustle: {story.Theme}",
                         Subtitle = story.Content,
                         Images = cardImages
                     };
