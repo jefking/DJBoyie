@@ -36,21 +36,28 @@ namespace shujaaz.djboyie
 
                 var acc = activity.CreateReply(reply);
 
-                    acc.Attachments.Add(new Attachment()
-                    {
-                        ContentUrl = "https://upload.wikimedia.org/wikipedia/en/a/a6/Bender_Rodriguez.png",
-                        ContentType = "image/png",
-                        Name = "Bender_Rodriguez.png"
-                    });
+                    //acc.Attachments.Add(new Attachment()
+                    //{
+                    //    ContentUrl = "https://upload.wikimedia.org/wikipedia/en/a/a6/Bender_Rodriguez.png",
+                    //    ContentType = "image/png",
+                    //    Name = "Bender_Rodriguez.png"
+                    //});
 
+                await connector.Conversations.ReplyToActivityAsync(acc);
+            }
+            else if (activity.Type == ActionTypes.ImBack)
+            {
+                var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                var reply = $"Welcome back.";
+                var acc = activity.CreateReply(reply);
                 await connector.Conversations.ReplyToActivityAsync(acc);
             }
             else
             {
                 HandleSystemMessage(activity);
             }
-            var response = Request.CreateResponse(HttpStatusCode.OK);
-            return response;
+            
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         private Activity HandleSystemMessage(Activity message)
@@ -69,6 +76,7 @@ namespace shujaaz.djboyie
                 case ActivityTypes.ContactRelationUpdate:
                     // Handle add/remove from contact lists
                     // Activity.From + Activity.Action represent what happened
+                    message.Action
                     break;
                 case ActivityTypes.Typing:
                     // Handle knowing that the user is typing
