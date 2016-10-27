@@ -7,6 +7,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using System.Linq;
+    using King.Azure.Data;
 
     [Serializable]
     public class StoryDialogue : IDialog<object>
@@ -49,6 +50,7 @@
 
             if (!string.IsNullOrWhiteSpace(story.Theme) && !string.IsNullOrWhiteSpace(story.Content) && null != story.Images && 0 < story.Images.Length)
             {
+                var table = new TableStorage("", "");
                 story.Task = PersonalStoryTask.Done;
             }
 
