@@ -77,7 +77,7 @@
                     reply.Text = "please add images";
                     break;
                 case PersonalStoryTask.Done:
-                    //reply.Text = $"{story.Theme}: {story.Content}";
+                    ;
 
                     reply.Attachments = new List<Attachment>();
                     var cardImages = new List<CardImage>();
@@ -89,7 +89,7 @@
 
                     var plCard = new HeroCard()
                     {
-                        Title = story.Theme,
+                        Title = $"The hustle: {story.Theme}",
                         Subtitle = story.Content,
                         Images = cardImages
                     };
