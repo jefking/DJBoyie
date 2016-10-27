@@ -6,6 +6,7 @@
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using System.Linq;
 
     [Serializable]
     public class StoryDialogue : IDialog<object>
@@ -79,12 +80,8 @@
                 case PersonalStoryTask.Done:
                     reply.Attachments = new List<Attachment>();
                     var cardImages = new List<CardImage>();
-
-                    foreach (var image in story.Images)
-                    {
-                        cardImages.Add(new CardImage(url: image));
-                    }
-
+                    cardImages.AddRange(story.Images.Select(i => new CardImage(url: i)));
+                
                     var card = new HeroCard()
                     {
                         Title = $"Your hustle: {story.Theme}",
