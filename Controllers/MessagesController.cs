@@ -21,13 +21,22 @@ namespace shujaaz.djboyie
         {
             if (activity.Type == ActivityTypes.Message)
             {
-                ConnectorClient connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
                 // calculate something for us to return
-                int length = (activity.Text ?? string.Empty).Length;
+                var length = (activity.Text ?? string.Empty).Length;
 
                 // return our reply to the user
-                Activity reply = activity.CreateReply($"You sent {activity.Text} which was {length} characters");
-                await connector.Conversations.ReplyToActivityAsync(reply);
+                var reply = $"You sent {activity.Text} which was {length} characters";
+
+                if (null != activity.Attachments)
+                {
+                    foreach (var attachment in activity.Attachments)
+                    {
+                        reply += $"Thanks for this: {attachment.ContentUrl}";
+                    }
+                }
+
+                await connector.Conversations.ReplyToActivityAsync(activity.CreateReply(reply));
             }
             else
             {
