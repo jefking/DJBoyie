@@ -47,6 +47,11 @@
                     break;
             }
             
+            if (!string.IsNullOrWhiteSpace(story.Theme) && !string.IsNullOrWhiteSpace(story.Content) && null != story.Images && 0 < story.Images.Length)
+            {
+                story.Task = PersonalStoryTask.Done;
+            }
+
             var replyToConversation = CreateResponse(context, story);
 
             await context.PostAsync(replyToConversation);
@@ -65,13 +70,17 @@
             switch (story.Task)
             {
                 case PersonalStoryTask.Theme:
-                    message.Text = "plase add theme";
+                    message.Text = "please add theme";
                     break;
                 case PersonalStoryTask.Description:
                     message.Text = "please add description";
                     break;
                 case PersonalStoryTask.Images:
                     message.Text = "please add images";
+                    break;
+                case PersonalStoryTask.Done:
+                    message.Text = "please wait for further instructions";
+                    //show them a card of what they have done
                     break;
             }
 
