@@ -62,29 +62,38 @@
 
         private IMessageActivity CreateResponse(IDialogContext context, PersonalStory story)
         {
-            var message = context.MakeMessage();
-            message.Recipient = message.From;
-            message.Type = "message";
+            var reply = context.MakeMessage();
+            reply.Recipient = reply.From;
+            reply.Type = "message";
             //message.Attachments = new List<Attachment>();
 
             switch (story.Task)
             {
                 case PersonalStoryTask.Theme:
-                    message.Text = "please add theme";
+                    reply.Text = "please add theme";
                     break;
                 case PersonalStoryTask.Description:
-                    message.Text = "please add description";
+                    reply.Text = "please add description";
                     break;
                 case PersonalStoryTask.Images:
-                    message.Text = "please add images";
+                    reply.Text = "please add images";
                     break;
                 case PersonalStoryTask.Done:
-                    message.Text = "please wait for further instructions";
+                    reply.Text = $"{story.Theme}: {story.Content}";
+
+                    foreach (var image in story.Images)
+                    {
+                        reply.Attachments.Add(new Attachment()
+                        {
+                            ContentUrl = image,
+                            ContentType = "image/png"
+                        });
+                    }
                     //show them a card of what they have done
                     break;
             }
 
-            return message;
+            return reply;
         }
     }
 }
