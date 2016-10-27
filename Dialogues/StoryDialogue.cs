@@ -11,7 +11,7 @@
     [Serializable]
     public class StoryDialogue : IDialog<object>
     {
-        private const string key = "personalstory";
+        public const string key = "personalstory";
 
         public async Task StartAsync(IDialogContext context)
         {

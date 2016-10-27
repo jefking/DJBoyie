@@ -2,7 +2,9 @@
 {
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
+    using Models;
     using shujaaz.djboyie.Dialogues;
+    using System;
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
@@ -23,8 +25,14 @@
                     await Conversation.SendAsync(activity, () => new StoryDialogue());
                     break;
                 case ActivityTypes.DeleteUserData:
-                    // Implement user deletion here
-                    // If we handle user deletion, return a real message
+                    var message = activity.CreateReply("hustle deleted");
+                    var sc = activity.GetStateClient();
+                    var userData = sc.BotState.GetPrivateConversationData(message.ChannelId, message.Conversation.Id, message.From.Id);
+                    // Set BotUserData
+                    userData.SetProperty<PersonalStory>(StoryDialogue.key, new PersonalStory());
+
+                    var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                    await connector.Conversations.ReplyToActivityAsync(message);
                     break;
                 case ActivityTypes.ConversationUpdate:
                     // Handle conversation state changes, like members being added and removed
