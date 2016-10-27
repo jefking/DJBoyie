@@ -1,0 +1,9 @@
+{
+  "name": "dj-boyie-bot",
+  "version": "0.0.0",
+  "dependencies": {
+    "applicationinsights": "^0.15.19",
+    "body-parser": "^1.0.2",
+    "express": "^4.14.0"
+  }
+}
