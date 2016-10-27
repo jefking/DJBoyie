@@ -89,7 +89,8 @@
                     {
                         Title = $"Your hustle: {story.Theme}",
                         Subtitle = story.Content,
-                        Images = cardImages
+                        Images = cardImages,
+                        Text = "Thanks, come back soon. There will be more!"
                     };
                     reply.Attachments.Add(card.ToAttachment());
 
