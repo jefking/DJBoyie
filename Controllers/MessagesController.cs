@@ -25,14 +25,7 @@
                     await Conversation.SendAsync(activity, () => new StoryDialogue());
                     break;
                 case ActivityTypes.DeleteUserData:
-                    var message = activity.CreateReply("hustle deleted");
-                    var sc = activity.GetStateClient();
-                    var userData = sc.BotState.GetPrivateConversationData(message.ChannelId, message.Conversation.Id, message.From.Id);
-                    // Set BotUserData
-                    userData.SetProperty<PersonalStory>(StoryDialogue.key, new PersonalStory());
-
-                    var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                    await connector.Conversations.ReplyToActivityAsync(message);
+                    //Delete profile data
                     break;
                 case ActivityTypes.ConversationUpdate:
                     // Handle conversation state changes, like members being added and removed
