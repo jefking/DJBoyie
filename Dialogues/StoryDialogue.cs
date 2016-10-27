@@ -60,17 +60,17 @@
             message.Type = "message";
             //message.Attachments = new List<Attachment>();
 
-            if (string.IsNullOrWhiteSpace(story.Content))
+            switch (story.Task)
             {
-                message.Text = "please add description";
-            }
-            else if (string.IsNullOrWhiteSpace(story.Theme))
-            {
-                message.Text = "plase add theme";
-            }
-            else if (null == story.Images || 0 == story.Images.Length)
-            {
-                message.Text = "please add images";
+                case PersonalStoryTask.Theme:
+                    message.Text = "plase add theme";
+                    break;
+                case PersonalStoryTask.Description:
+                    message.Text = "please add description";
+                    break;
+                case PersonalStoryTask.Images:
+                    message.Text = "please add images";
+                    break;
             }
 
             return message;
