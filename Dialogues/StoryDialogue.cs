@@ -65,7 +65,6 @@
             reply.Recipient = reply.From;
             reply.Type = "message";
             
-
             switch (story.Task)
             {
                 case PersonalStoryTask.Theme:
@@ -78,7 +77,7 @@
                     reply.Text = "please add images";
                     break;
                 case PersonalStoryTask.Done:
-                    reply.Text = $"{story.Theme}: {story.Content}";
+                    //reply.Text = $"{story.Theme}: {story.Content}";
 
                     reply.Attachments = new List<Attachment>();
                     var cardImages = new List<CardImage>();
@@ -94,7 +93,8 @@
                         Subtitle = story.Content,
                         Images = cardImages
                     };
-
+                    var plAttachment = plCard.ToAttachment();
+                    reply.Attachments.Add(plAttachment);
                     //show them a card of what they have done
                     break;
             }
