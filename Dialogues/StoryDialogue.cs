@@ -21,17 +21,21 @@
 
             var message = await argument;
 
-            if (string.IsNullOrWhiteSpace(story.Content))
+            if (!string.IsNullOrEmpty(message.Text))
             {
                 story.Content = message.Text;
             }
-            else if (string.IsNullOrWhiteSpace(story.Theme))
+            else if (!string.IsNullOrEmpty(message.Text))
             {
                 story.Theme = message.Text;
             }
-            else if (null == story.Images || 0 == story.Images.Length)
+            else if (null != message.Attachments && 0 < message.Attachments.Count)
             {
-
+                story.Images = new string[message.Attachments.Count];
+                for(var i = 0; i < message.Attachments.Count; i++)
+                {
+                    story.Images[i] = message.Attachments[i].ContentUrl;
+                }
             }
 
             var replyToConversation = CreateResponse(context, story);
