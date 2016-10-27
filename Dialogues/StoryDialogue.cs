@@ -18,7 +18,9 @@
 
         public async Task MessageReceivedAsync(IDialogContext context, IAwaitable<IMessageActivity> argument)
         {
-            var story = context.PrivateConversationData.Get<PersonalStory>(key) ?? new PersonalStory();
+            PersonalStory story;
+            context.PrivateConversationData.TryGetValue<PersonalStory>(key, out story);
+            story = story ?? new PersonalStory();
 
             var message = await argument;
 
