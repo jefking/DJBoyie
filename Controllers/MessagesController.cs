@@ -24,7 +24,7 @@ namespace shujaaz.djboyie
                 var length = (activity.Text ?? string.Empty).Length;
 
                 // return our reply to the user
-                var reply = $"You sent {activity.Text} which was {length} characters";
+                var reply = $"Thanks for: {activity.Text}";
 
                 if (null != activity.Attachments)
                 {
@@ -42,6 +42,7 @@ namespace shujaaz.djboyie
                         ContentType = "image/png",
                         Name = "Bender_Rodriguez.png"
                     });
+
                 await connector.Conversations.ReplyToActivityAsync(acc);
             }
             else
