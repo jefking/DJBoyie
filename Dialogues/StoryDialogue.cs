@@ -77,8 +77,6 @@
                     reply.Text = "please add images";
                     break;
                 case PersonalStoryTask.Done:
-                    ;
-
                     reply.Attachments = new List<Attachment>();
                     var cardImages = new List<CardImage>();
 
@@ -87,15 +85,14 @@
                         cardImages.Add(new CardImage(url: image));
                     }
 
-                    var plCard = new HeroCard()
+                    var card = new HeroCard()
                     {
                         Title = $"The hustle: {story.Theme}",
                         Subtitle = story.Content,
                         Images = cardImages
                     };
-                    var plAttachment = plCard.ToAttachment();
-                    reply.Attachments.Add(plAttachment);
-                    //show them a card of what they have done
+                    reply.Attachments.Add(card.ToAttachment());
+
                     break;
             }
 
