@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 
-namespace DJBoyieBot
+namespace shujaaz.djboyie
 {
     public static class WebApiConfig
     {

@@ -8,7 +8,7 @@ using System.Web.Http.Description;
 using Microsoft.Bot.Connector;
 using Newtonsoft.Json;
 
-namespace DJBoyieBot
+namespace shujaaz.djboyie
 {
     [BotAuthentication]
     public class MessagesController : ApiController
