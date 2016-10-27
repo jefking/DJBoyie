@@ -16,25 +16,26 @@ namespace shujaaz.djboyie
         /// </summary>
         public async Task<HttpResponseMessage> Post([FromBody]Activity activity)
         {
-            if (activity.Type == ActivityTypes.Message)
+            switch (activity.Type)
             {
-                var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
+                case ActivityTypes.Message:
+                    var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
 
-                // calculate something for us to return
-                var length = (activity.Text ?? string.Empty).Length;
+                    // calculate something for us to return
+                    var length = (activity.Text ?? string.Empty).Length;
 
-                // return our reply to the user
-                var reply = $"Thanks for: {activity.Text}";
+                    // return our reply to the user
+                    var reply = $"Thanks for: {activity.Text}";
 
-                if (null != activity.Attachments)
-                {
-                    foreach (var attachment in activity.Attachments)
+                    if (null != activity.Attachments)
                     {
-                        reply += $"Thanks for this: {attachment.ContentUrl}";
+                        foreach (var attachment in activity.Attachments)
+                        {
+                            reply += $"Thanks for this: {attachment.ContentUrl}";
+                        }
                     }
-                }
 
-                var acc = activity.CreateReply(reply);
+                    var acc = activity.CreateReply(reply);
 
                     //acc.Attachments.Add(new Attachment()
                     //{
@@ -43,18 +44,15 @@ namespace shujaaz.djboyie
                     //    Name = "Bender_Rodriguez.png"
                     //});
 
-                await connector.Conversations.ReplyToActivityAsync(acc);
-            }
-            else if (activity.Type == ActionTypes.ImBack)
-            {
-                var connector = new ConnectorClient(new Uri(activity.ServiceUrl));
-                var reply = $"Welcome back.";
-                var acc = activity.CreateReply(reply);
-                await connector.Conversations.ReplyToActivityAsync(acc);
-            }
-            else
-            {
-                HandleSystemMessage(activity);
+                    await connector.Conversations.ReplyToActivityAsync(acc);
+                    break;
+                case ActionTypes.ImBack:
+                    var c = new ConnectorClient(new Uri(activity.ServiceUrl));
+                    await c.Conversations.ReplyToActivityAsync(activity.CreateReply("Welcome back."));
+                    break;
+                default:
+                    HandleSystemMessage(activity);
+                    break;
             }
             
             return Request.CreateResponse(HttpStatusCode.OK);
