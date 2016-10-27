@@ -191,6 +191,7 @@
     </Compile>
     <Compile Include="Models\Enums.cs" />
     <Compile Include="Models\PersonalStory.cs" />
+    <Compile Include="Models\PersonalStoryEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

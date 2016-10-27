@@ -8,11 +8,13 @@
     using System.Threading.Tasks;
     using System.Linq;
     using King.Azure.Data;
+    using System.Configuration;
 
     [Serializable]
     public class StoryDialogue : IDialog<object>
     {
         public const string key = "personalstory";
+        private readonly string tableConnection = ConfigurationManager.AppSettings["StoryDialogueStore"];
 
         public async Task StartAsync(IDialogContext context)
         {
@@ -50,7 +52,20 @@
 
             if (!string.IsNullOrWhiteSpace(story.Theme) && !string.IsNullOrWhiteSpace(story.Content) && null != story.Images && 0 < story.Images.Length)
             {
-                var table = new TableStorage("", "");
+                var a = await argument;
+                var entity = new PersonalStoryEntity()
+                {
+                    PartitionKey = a.Recipient.Id,
+                    RowKey = a.From.Id,
+                    Content = story.Content,
+                    Theme = story.Theme,
+                    Images = string.Join(",", story.Images),
+                    Timestamp = DateTime.UtcNow,
+                };
+
+                var table = new TableStorage("userprofile", tableConnection);
+                await table.InsertOrReplace(entity);
+
                 story.Task = PersonalStoryTask.Done;
             }
 
