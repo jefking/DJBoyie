@@ -32,6 +32,17 @@
 
             var message = await argument;
 
+            var msgTable = new TableStorage("message", tableConnection);
+            await msgTable.CreateIfNotExists();
+            var msg = new Message()
+            {
+                    PartitionKey = a.Recipient.Id,
+                    RowKey = $"{a.From.Id}_{DateTime.UtcNow}",
+                    Timestamp = DateTime.UtcNow,
+                    Content = message.Text,
+                    Task = story.Task
+            };
+
             switch (story.Task)
             {
                 case PersonalStoryTask.Theme:
