@@ -13,6 +13,7 @@
     [BotAuthentication]
     public class MessagesController : ApiController
     {
+        #region Methods
         /// <summary>
         /// POST: api/Messages
         /// Receive a message from a user and reply to it
@@ -45,5 +46,6 @@
 
             return Request.CreateResponse(HttpStatusCode.OK);
         }
+        #endregion
     }
 }
