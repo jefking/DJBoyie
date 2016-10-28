@@ -1,4 +1,4 @@
-﻿namespace shujaaz.djboyie
+﻿namespace shujaaz.djboyie.Contollers
 {
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;

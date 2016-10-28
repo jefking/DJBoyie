@@ -1,5 +1,6 @@
 ﻿namespace shujaaz.djboyie.Dialogues
 {
+    using Data;
     using King.Azure.Data;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
@@ -37,11 +38,11 @@
 
             var msg = new Message()
             {
-                    PartitionKey = a.Recipient.Id,
-                    RowKey = $"{a.From.Id}_{DateTime.UtcNow}",
+                    PartitionKey = message.Recipient.Id,
+                    RowKey = $"{message.From.Id}_{DateTime.UtcNow}",
                     Timestamp = DateTime.UtcNow,
                     Content = message.Text,
-                    Task = story.Task
+                    Task = (int)story.Task
             };
             await storage.Save(msg);
 
@@ -83,7 +84,7 @@
                 story.Task = PersonalStoryTask.Done;
             }
 
-            var replyToConversation = CreateResponse(context, story);
+            var replyToConversation = await CreateResponse(context, story);
 
             await context.PostAsync(replyToConversation);
             context.PrivateConversationData.SetValue<PersonalStory>(key, story);
@@ -91,7 +92,7 @@
             context.Wait(MessageReceivedAsync);
         }
 
-        private IMessageActivity CreateResponse(IDialogContext context, PersonalStory story)
+        private async Task<IMessageActivity> CreateResponse(IDialogContext context, PersonalStory story)
         {
             var reply = context.MakeMessage();
             reply.Recipient = reply.From;
@@ -109,7 +110,7 @@
                     reply.Text = "please add images";
                     break;
                 case PersonalStoryTask.Done:
-                    var count = await storage.MessagesSinceDone(a.Recipient.Id);
+                    var count = await storage.MessagesSinceDone(reply.From.Id);
                     if (0 >= count)
                     {
                         reply.Attachments = new List<Attachment>();
