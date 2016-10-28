@@ -1,5 +1,9 @@
 public class Storage
 {
+        using System.Configuration;
+        using King.Azure.Data;
+        using System.Linq;
+
         #region Members
         //Table Storage Connection
         private readonly string tableConnection = ConfigurationManager.AppSettings["StoryDialogueStore"];
@@ -11,7 +15,7 @@ public class Storage
         #region Methods
         public async Task Save(Message msg)
         {
-            var table = new TableStorage("message", tableConnection);
+            var table = new TableStorage("messages", tableConnection);
             if (!msgTableCreated)
             {
                 msgTableCreated = await table.CreateIfNotExists();
@@ -30,6 +34,13 @@ public class Storage
 
             await table.CreateIfNotExists();
             await table.InsertOrReplace(entity);
+        }
+
+        public async Task<int> MessagesSinceDone()
+        {
+            var table = new TableStorage("messages", tableConnection);
+            var msgs = await table.Select();
+            return msgs.Count();
         }
         #endregion
 }

@@ -75,7 +75,7 @@
                     RowKey = a.From.Id,
                     Content = story.Content,
                     Theme = story.Theme,
-                    Images = string.Join(",", story.Images),
+                    Images = string.Join(", ", story.Images),
                     Timestamp = DateTime.UtcNow,
                 };
                 await storage.Save(entity);
