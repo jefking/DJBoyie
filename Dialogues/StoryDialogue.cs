@@ -14,8 +14,11 @@
     public class StoryDialogue : IDialog<object>
     {
         #region Members
+        //Story Data for User
         public const string key = "personalstory";
-        private readonly string tableConnection = ConfigurationManager.AppSettings["StoryDialogueStore"];
+
+        //Storage
+        private readonly Storage storage = new Storage();
         #endregion
 
         #region Methods
@@ -32,8 +35,6 @@
 
             var message = await argument;
 
-            var msgTable = new TableStorage("message", tableConnection);
-            await msgTable.CreateIfNotExists();
             var msg = new Message()
             {
                     PartitionKey = a.Recipient.Id,
@@ -42,6 +43,7 @@
                     Content = message.Text,
                     Task = story.Task
             };
+            await storage.Save(msg);
 
             switch (story.Task)
             {
@@ -76,10 +78,7 @@
                     Images = string.Join(",", story.Images),
                     Timestamp = DateTime.UtcNow,
                 };
-
-                var table = new TableStorage("userprofile", tableConnection);
-                await table.CreateIfNotExists();
-                await table.InsertOrReplace(entity);
+                await storage.Save(entity);
 
                 story.Task = PersonalStoryTask.Done;
             }
