@@ -109,7 +109,7 @@
                     reply.Text = "please add images";
                     break;
                 case PersonalStoryTask.Done:
-                    var count = await storage.MessagesSinceDone();
+                    var count = await storage.MessagesSinceDone(a.Recipient.Id);
                     if (0 >= count)
                     {
                         reply.Attachments = new List<Attachment>();
