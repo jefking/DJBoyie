@@ -11,21 +11,23 @@ public class Storage
         public async Task Save(Message msg)
         {
             var table = new TableStorage("message", tableConnection);
-            if !(msgTableCreated)
+            if (!msgTableCreated)
             {
                 msgTableCreated = await table.CreateIfNotExists();
             }
 
             await table.Save(msg);
         }
+
         public async Task Save(PersonalStory story)
         {
-                var table = new TableStorage("userprofile", tableConnection);
-            if !(storyTableCreated)
+            var table = new TableStorage("userprofile", tableConnection);
+            if (!storyTableCreated)
             {
                 storyTableCreated = await table.CreateIfNotExists();
             }
-                await table.CreateIfNotExists();
-                await table.InsertOrReplace(entity);
+
+            await table.CreateIfNotExists();
+            await table.InsertOrReplace(entity);
         }
 }
