@@ -1,14 +1,14 @@
 ﻿namespace shujaaz.djboyie.Dialogues
 {
+    using King.Azure.Data;
     using Microsoft.Bot.Builder.Dialogs;
     using Microsoft.Bot.Connector;
     using Models;
     using System;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using System.Linq;
-    using King.Azure.Data;
     using System.Configuration;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     [Serializable]
     public class StoryDialogue : IDialog<object>
@@ -64,6 +64,7 @@
                 };
 
                 var table = new TableStorage("userprofile", tableConnection);
+                await table.CreateIfNotExists();
                 await table.InsertOrReplace(entity);
 
                 story.Task = PersonalStoryTask.Done;
