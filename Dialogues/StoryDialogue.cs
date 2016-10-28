@@ -17,9 +17,6 @@
         #region Members
         //Story Data for User
         public const string key = "personalstory";
-
-        //Storage
-        private readonly Storage storage = new Storage();
         #endregion
 
         #region Methods
@@ -44,7 +41,9 @@
                     Content = message.Text,
                     Task = (int)story.Task
             };
-            await storage.Save(msg);
+
+            var storage = new Storage();
+        await storage.Save(msg);
 
             switch (story.Task)
             {
@@ -110,6 +109,7 @@
                     reply.Text = "please add images";
                     break;
                 case PersonalStoryTask.Done:
+                    var storage = new Storage();
                     var count = await storage.MessagesSinceDone(reply.From.Id);
                     if (0 >= count)
                     {

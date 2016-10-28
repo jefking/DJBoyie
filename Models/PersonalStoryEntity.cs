@@ -6,9 +6,9 @@
     [Serializable]
     public class PersonalStoryEntity : TableEntity
     {
-        public string Images;
-        public string Content;
-        public string Theme;
-        public int Task;
+        public string Images { get; set; }
+        public string Content { get; set; }
+        public string Theme { get; set; }
+        public int Task { get; set; }
     }
 }

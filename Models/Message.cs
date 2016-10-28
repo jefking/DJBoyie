@@ -6,7 +6,7 @@ namespace shujaaz.djboyie.Models
     [Serializable]
     public class Message : TableEntity
     {
-        public string Content;
-        public int Task;
+        public string Content { get; set; }
+        public int Task { get; set; }
     }
 }
