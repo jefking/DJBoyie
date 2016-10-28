@@ -36,11 +36,13 @@ public class Storage
             await table.InsertOrReplace(entity);
         }
 
-        public async Task<int> MessagesSinceDone()
+        public async Task<int> MessagesSinceDone(string partition)
         {
             var table = new TableStorage("messages", tableConnection);
-            var msgs = await table.Select();
-            return msgs.Count();
+            var msgs = await table.QueryByPartition<Message>(partition);
+            return (from m in msgs
+                    where m.Task == PersonalStoryTask.Done
+                    select m).Count();
         }
         #endregion
 }
