@@ -109,19 +109,27 @@
                     reply.Text = "please add images";
                     break;
                 case PersonalStoryTask.Done:
-                    reply.Attachments = new List<Attachment>();
-                    var cardImages = new List<CardImage>();
-                    cardImages.AddRange(story.Images.Select(i => new CardImage(url: i)));
-                
-                    var card = new HeroCard()
+                    var count = await storage.MessagesSinceDone();
+                    if (0 >= count)
                     {
-                        Title = $"Your hustle: {story.Theme}",
-                        Subtitle = story.Content,
-                        Images = cardImages,
-                        Text = "Thanks, come back soon. There will be more!"
-                    };
-                    reply.Attachments.Add(card.ToAttachment());
+                        reply.Attachments = new List<Attachment>();
+                        var cardImages = new List<CardImage>();
+                        cardImages.AddRange(story.Images.Select(i => new CardImage(url: i)));
+                    
+                        var card = new HeroCard()
+                        {
+                            Title = $"Your hustle: {story.Theme}",
+                            Subtitle = story.Content,
+                            Images = cardImages,
+                            Text = "Thanks, come back soon. There will be more!"
+                        };
 
+                        reply.Attachments.Add(card.ToAttachment());
+                    }
+                    else
+                    {
+                        reply.Text = "I am thinking about your hustle... more coming soon. Please feel free to add more photos.";
+                    }
                     break;
             }
 
