@@ -13,9 +13,12 @@
     [Serializable]
     public class StoryDialogue : IDialog<object>
     {
+        #region Members
         public const string key = "personalstory";
         private readonly string tableConnection = ConfigurationManager.AppSettings["StoryDialogueStore"];
+        #endregion
 
+        #region Methods
         public async Task StartAsync(IDialogContext context)
         {
             context.Wait(MessageReceivedAsync);
@@ -114,5 +117,6 @@
 
             return reply;
         }
+        #endregion
     }
 }
