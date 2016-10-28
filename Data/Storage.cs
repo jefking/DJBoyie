@@ -8,6 +8,7 @@ public class Storage
         private static bool storyTableCreated;
         #endregion
 
+        #region Methods
         public async Task Save(Message msg)
         {
             var table = new TableStorage("message", tableConnection);
@@ -30,4 +31,5 @@ public class Storage
             await table.CreateIfNotExists();
             await table.InsertOrReplace(entity);
         }
+        #endregion
 }
